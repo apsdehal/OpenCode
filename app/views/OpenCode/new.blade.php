@@ -3,10 +3,11 @@
 @section('container')
 
 	{{Form::open(array('url'=>'/'))}}
-		{{Form::textarea('code', $code, array('placeholder'=>'Start Typing Here','autofocus'))}}
+		{{Form::textarea('code', $code, array('placeholder'=>$placeholder,'autofocus'))}}
 		<div class="btn-group nav">
-		{{HTML::linkRoute('new_code','Start Over',null, array('class'=>'btn btn-danger'))}}
 		{{Form::submit('Save', array('class'=>'btn btn-success'))}}
+		{{HTML::linkRoute('show_info', 'What\'s this?', null, array('class'=>'btn btn-warning'))}}
+		{{HTML::linkRoute('new_code','Start Over',null, array('class'=>'btn btn-danger'))}}
 		</div>
 	{{Form::close()}}
 @stop

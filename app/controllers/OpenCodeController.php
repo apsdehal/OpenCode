@@ -7,9 +7,10 @@ class OpenCodeController extends BaseController {
 	 *
 	 * @return Response
 	 */
-	public function getNew($defaultCode='')
-	{
-		return View::make('OpenCode.new')->with('code',$defaultCode);
+	public function getNew($defaultCode='', $defaultPlaceholder='Start Typing Here')
+	{	return View::make('OpenCode.new')->with(array(
+			'code'=>$defaultCode,
+			'placeholder'=>$defaultPlaceholder));
 	}
 
 	/**
@@ -19,21 +20,29 @@ class OpenCodeController extends BaseController {
 	 */
 	public function postCreate()
 	{
-		$newCode = OpenCode::create(array('code'=>Input::get('code')));
-		if($newCode){
-			return Redirect::route('show_code', $newCode->id);
+
+		$inputCode = Input::all();
+
+		$rules = array(
+			'code' => 'required'
+			);
+
+		$validator = Validator::make($inputCode, $rules);
+
+		if($validator->passes()){
+
+			$newCode = OpenCode::create(array('code'=>$inputCode['code']));
+			if($newCode){
+				return Redirect::route('show_code', $newCode->id);
+			} else {
+				return $this->getNew('','There was some error in saving. Please Try Again');
+			}
+		} else {
+
+			return $this->getNew('', 'Some text is required, Now start typing!' );
 		}
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
 	/**
 	 * Fork the specified resource
 	 * @param int $id
@@ -57,40 +66,18 @@ class OpenCodeController extends BaseController {
 	public function getShow($id)
 	{
 		$text = OpenCode::find($id);
+		if($text){
 		return View::make('OpenCode.show', $text->toArray());
+		} else {
+			return $this->getNew('','You tried a url that doesn\'t exists, Now start typing!');
+		}
 	}
-
 	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
+	 * Display Info
 	 * @return Response
 	 */
-	public function edit($id)
-	{
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
+	public function getInfo(){
+		return View::make('OpenCode.info');
 	}
 
 }
