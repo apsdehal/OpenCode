@@ -7,9 +7,9 @@ class OpenCodeController extends BaseController {
 	 *
 	 * @return Response
 	 */
-	public function getNew()
+	public function getNew($defaultCode='')
 	{
-		return View::make('OpenCode.new');
+		return View::make('OpenCode.new')->with('code',$defaultCode);
 	}
 
 	/**
@@ -34,6 +34,19 @@ class OpenCodeController extends BaseController {
 	{
 		//
 	}
+	/**
+	 * Fork the specified resource
+	 * @param int $id
+	 * @return Response
+	 */
+
+	public function getFork($id)
+	{
+		$code = OpenCode::find($id);
+		if(!$code) return Redirect::route('new_code');
+		return $this->getNew($code->code);
+	}
+
 
 	/**
 	 * Display the specified resource.

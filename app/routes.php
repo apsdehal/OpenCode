@@ -14,4 +14,5 @@
 Route::get('/', array('as'=>'new_code','uses'=>'OpenCodeController@getNew'));
 Route::get('new', array('as'=>'new_code','uses'=>'OpenCodeController@getNew'));
 Route::get('/{id}', array('as'=>'show_code','uses'=>'OpenCodeController@getShow'));
+Route::get('/{id}/fork', array('as'=>'fork_code','uses'=>'OpenCodeController@getFork'));
 Route::post('/', array('as'=>'save_code','uses'=>'OpenCodeController@postCreate'));
